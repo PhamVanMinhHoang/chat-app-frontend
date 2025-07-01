@@ -1,0 +1,13 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: react-spa
+    volumes:
+      - ./src:/app
+      - /app/node_modules
+    ports:
+      - "3001:5174"
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
