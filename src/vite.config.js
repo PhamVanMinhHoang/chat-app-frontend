@@ -6,6 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5174,
-    open: true,
+    host: true,
+    watch : {
+      usePolling: true, // Use polling for file watching
+      interval: 1000, // Polling interval in milliseconds
+    },
   },
 })
