@@ -1,5 +1,5 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from '../../api/axios'; // Adjust the import path as necessary
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import axios from '../../api/axios'; // ✅ KHÔNG import store ở đây
 
 type AuthState = {
     token: string | null;
@@ -76,7 +76,7 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.loading = false;
                 state.token = action.payload.token;
-                localStorage.setItem('token', action.payload.refresh_token);
+                localStorage.setItem('token', action.payload.token);
                 // Optional: handle refresh token
                 state.refreshToken = action.payload.refresh_token;
                 localStorage.setItem('refreshToken', action.payload.refresh_token);
@@ -92,7 +92,7 @@ const authSlice = createSlice({
             .addCase(register.fulfilled, (state, action) => {
                 state.loading = false;
                 state.token = action.payload.token;
-                localStorage.setItem('token', action.payload.refresh_token);
+                localStorage.setItem('token', action.payload.token);
                 // Optional: handle refresh token
                 state.refreshToken = action.payload.refresh_token;
                 localStorage.setItem('refreshToken', action.payload.refresh_token);
