@@ -1,44 +1,55 @@
-import React, { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { register } from '../store/slices/authSlice';
-import { Navigate, Link } from 'react-router-dom';
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { register } from '../store/slices/auth/authSlice'
+import AuthLayout from '../layout/AuthLayout'
 
-const Register = () => {
-    const dispatch = useAppDispatch();
-    const { token, loading, error } = useAppSelector((s) => s.auth);
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Register: React.FC = () => {
+    const dispatch = useAppDispatch()
+    const { loading, error } = useAppSelector((s) => s.auth)
+    const navigate = useNavigate()
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
 
-    if (token) return <Navigate to="/" />;
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        dispatch(register({ name, email, password }));
-    };
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+        const result = await dispatch(register({ email, password }))
+        if (register.fulfilled.match(result)) {
+            navigate('/')
+        }
+    }
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold text-center">Register</h2>
-            {error && <div className="text-red-500">{error}</div>}
-            <input type="text" placeholder="Name" value={name}
-                   onChange={(e) => setName(e.target.value)}
-                   className="w-full p-2 border rounded" required />
-            <input type="email" placeholder="Email" value={email}
-                   onChange={(e) => setEmail(e.target.value)}
-                   className="w-full p-2 border rounded" required />
-            <input type="password" placeholder="Password" value={password}
-                   onChange={(e) => setPassword(e.target.value)}
-                   className="w-full p-2 border rounded" required />
-            <button type="submit" disabled={loading}
-                    className="w-full py-2 bg-indigo-600 text-white rounded">
-                {loading ? 'Loading...' : 'Register'}
-            </button>
-            <p className="text-center">
-                Already have an account? <Link to="/login" className="text-indigo-600">Login</Link>
-            </p>
-        </form>
-    );
+        <AuthLayout>
+            <h2 className="text-2xl mb-4">Register</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Email"
+                    required
+                    className="w-full border p-2 rounded"
+                />
+                <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    required
+                    className="w-full border p-2 rounded"
+                />
+                {error && <p className="text-red-500">{error}</p>}
+                <button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full bg-blue-600 text-white p-2 rounded"
+                >
+                    {loading ? 'Registering...' : 'Register'}
+                </button>
+            </form>
+        </AuthLayout>
+    )
 }
 
-export default Register;
+export default Register
