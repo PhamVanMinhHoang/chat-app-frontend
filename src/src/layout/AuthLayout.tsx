@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
+import { Outlet } from 'react-router-dom'
 
-const AuthLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-full max-w-md bg-white p-6 shadow-md rounded-lg">
-            {children}
+interface AuthLayoutProps {
+    children?: ReactNode
+}
+
+export default function AuthLayout({ children }: AuthLayoutProps): JSX.Element {
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="w-full max-w-md bg-white p-6 shadow-md rounded-lg">
+                {/* Nếu có children truyền vào trực tiếp thì ưu tiên, nếu không thì dùng Outlet */}
+                {children ?? <Outlet />}
+            </div>
         </div>
-    </div>
-)
-
-export default AuthLayout
+    )
+}

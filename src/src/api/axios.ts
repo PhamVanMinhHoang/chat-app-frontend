@@ -1,34 +1,37 @@
-import axios from 'axios'
-import { store } from '../store/store'
-import { logout, refreshAuthToken } from '../store/slices/auth/authSlice'
+import { client } from './client'
+import { store } from '@/app/store'
+import { refreshAuthToken, logout } from '@/features/auth'
 
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
-    headers: { 'Content-Type': 'application/json' },
-})
-
-// Request interceptor: attach token
-instance.interceptors.request.use(
+client.interceptors.request.use(
     (config) => {
         const token = store.getState().auth.token
-        if (token) config.headers!['Authorization'] = `Bearer ${token}`
+        if (token) {
+            config.headers = config.headers ?? {}
+            config.headers.Authorization = `Bearer ${token}`
+        }
         return config
     },
     (error) => Promise.reject(error)
 )
 
-// Response interceptor: handle 401 -> refresh
-instance.interceptors.response.use(
+client.interceptors.response.use(
     (response) => response,
     async (error) => {
         const original = error.config
-        if (error.response?.status === 401 && !original._retry) {
+        if (
+            error.response?.status === 401 &&
+            !original._retry
+        ) {
             original._retry = true
             try {
-                await store.dispatch(refreshAuthToken())
-                const token = store.getState().auth.token
-                if (token) original.headers['Authorization'] = `Bearer ${token}`
-                return instance(original)
+                const result = await store.dispatch(refreshAuthToken()).unwrap()
+                if (result?.token) {
+                    original.headers = {
+                        ...original.headers,
+                        Authorization: `Bearer ${result.token}`,
+                    }
+                    return client(original)
+                }
             } catch {
                 store.dispatch(logout())
             }
@@ -37,4 +40,4 @@ instance.interceptors.response.use(
     }
 )
 
-export default instance
+export default client

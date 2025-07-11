@@ -1,11 +1,10 @@
-import React, {JSX} from 'react'
-import { Navigate } from 'react-router-dom'
-import { useAppSelector } from '../hooks'
-import { selectIsAuthenticated } from '../store/slices/auth/authSlice'
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAppSelector } from '@/hooks/redux'
+import { selectIsAuthenticated } from '@/features/auth'
 
-const ProtectedRoute: React.FC<{ children: JSX.Element }> = ({ children }) => {
+const ProtectedRoute = () => {
     const isAuth = useAppSelector(selectIsAuthenticated)
-    return isAuth ? children : <Navigate to="/login" />
+    return isAuth ? <Outlet /> : <Navigate to="/login" />
 }
 
 export default ProtectedRoute

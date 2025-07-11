@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { register } from '../store/slices/auth/authSlice'
-import AuthLayout from '../layout/AuthLayout'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { register } from '@/features/auth'
+import AuthLayout from '@/layout/AuthLayout'
 
 const Register: React.FC = () => {
     const dispatch = useAppDispatch()
@@ -13,10 +13,8 @@ const Register: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const result = await dispatch(register({ email, password }))
-        if (register.fulfilled.match(result)) {
-            navigate('/')
-        }
+        const result = await dispatch(register({ email, password })).unwrap()
+        if (result.token) navigate('/')
     }
 
     return (
