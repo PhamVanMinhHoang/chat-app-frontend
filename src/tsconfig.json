@@ -17,5 +17,5 @@
     "jsx": "react-jsx",
     "types": ["vite/client"]  // 👈 giúp nhận diện import.meta.env
   },
-  "include": ["src", "vite-env.d.ts"]
+  "include": ["src"]
 }
