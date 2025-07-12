@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from '../../rootReducer'
+import type { RootState } from '@/app/types'
 import { loginApi, registerApi, refreshTokenApi, Credentials } from './authService'
 
 interface AuthState {
@@ -47,7 +47,7 @@ export const refreshAuthToken = createAsyncThunk<
     void,
     { state: RootState; rejectValue: string }
 >('auth/refresh', async (_, { getState, rejectWithValue }) => {
-    const rt = getState().auth.refreshToken
+    const rt = (getState() as RootState).auth.refreshToken
     if (!rt) return rejectWithValue('No refresh token')
     try {
         const res = await refreshTokenApi(rt)
@@ -101,7 +101,11 @@ const authSlice = createSlice({
     },
 })
 
-export const { logout } = authSlice.actions
+
+// ----- Selectors
 export const selectAuth = (state: RootState) => state.auth
 export const selectIsAuthenticated = (state: RootState) => Boolean(state.auth.token)
+
+// ----- Exports -----
+export const { logout } = authSlice.actions
 export default authSlice.reducer

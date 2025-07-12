@@ -1,10 +1,10 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { logout, selectAuth } from '../store/slices/auth/authSlice'
+import { useAppDispatch, useAppSelector } from '@/hooks/redux'
+import { logout } from '@/features/auth'
 
 const Header: React.FC = () => {
     const dispatch = useAppDispatch()
-    const { token } = useAppSelector(selectAuth)
+    const { token } = useAppSelector((s) => s.auth)
 
     return (
         <header className="bg-blue-600 text-white p-4 flex justify-between">
