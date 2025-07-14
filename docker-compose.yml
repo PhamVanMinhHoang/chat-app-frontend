@@ -4,12 +4,9 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: react-spa
-    volumes:
-      - ./src:/app
-#      - /app/node_modules
     ports:
-      - "3001:5174"
-    environment:
-      - VITE_API_URL=${VITE_API_URL}
-
+      - "3001:5175"
+    volumes:
+      - ./src:/app   # mount source code để dev
+    working_dir: /app
     command: sh -c "npm install && npm run dev"

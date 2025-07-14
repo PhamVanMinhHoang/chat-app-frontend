@@ -8,12 +8,14 @@ const Register: React.FC = () => {
     const dispatch = useAppDispatch()
     const { loading, error } = useAppSelector((s) => s.auth)
     const navigate = useNavigate()
+    const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [password_confirmation, setPasswordConfirmation] = useState('')
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const result = await dispatch(register({ email, password })).unwrap()
+        const result = await dispatch(register({name, email, password, password_confirmation })).unwrap()
         if (result.token) navigate('/')
     }
 
@@ -21,6 +23,17 @@ const Register: React.FC = () => {
         <AuthLayout>
             <h2 className="text-2xl mb-4">Register</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Name */}
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Name"
+                    required
+                    className="w-full border p-2 rounded"
+                />
+
+                {/* Email */}
                 <input
                     type="email"
                     value={email}
@@ -29,6 +42,8 @@ const Register: React.FC = () => {
                     required
                     className="w-full border p-2 rounded"
                 />
+
+                {/* Password */}
                 <input
                     type="password"
                     value={password}
@@ -37,6 +52,17 @@ const Register: React.FC = () => {
                     required
                     className="w-full border p-2 rounded"
                 />
+
+                {/* Confirm Password */}
+                <input
+                    type="password"
+                    value={password_confirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    placeholder="Confirm Password"
+                    required
+                    className="w-full border p-2 rounded"
+                />
+
                 {error && <p className="text-red-500">{error}</p>}
                 <button
                     type="submit"
