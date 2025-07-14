@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   frontend:
     build:
@@ -6,7 +8,16 @@ services:
     container_name: react-spa
     ports:
       - "3001:5175"
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - ./src/.env.local       # nạp biến môi trường
     volumes:
-      - ./src:/app   # mount source code để dev
+      - ./src:/app             # mount source code
+      - node_modules:/app/node_modules  # giữ nguyên thư mục node_modules do Dockerfile tạo ra
     working_dir: /app
-    command: sh -c "npm install && npm run dev"
+    command: npm run dev      # đã chạy `npm install` trong Dockerfile
+
+volumes:
+  node_modules:
+
