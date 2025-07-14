@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from '@/app/types'
-import { loginApi, registerApi, refreshTokenApi, Credentials } from './authService'
+import { loginApi, registerApi, refreshTokenApi, Credentials, RegisterCredentials } from './authService'
 
 interface AuthState {
     token: string | null
@@ -31,10 +31,12 @@ export const login = createAsyncThunk<
 
 export const register = createAsyncThunk<
     { token: string; refreshToken: string },
-    Credentials,
+    RegisterCredentials,
     { rejectValue: string }
 >('auth/register', async (creds, { rejectWithValue }) => {
     try {
+        console.log('API URL:', import.meta.env.VITE_API_URL);
+
         const res = await registerApi(creds)
         return res.data
     } catch (err: any) {

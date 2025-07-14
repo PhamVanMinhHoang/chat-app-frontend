@@ -10,10 +10,14 @@ const Login: React.FC = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const client_id = import.meta.env.VITE_REACT_APP_PASSPORT_CLIENT_ID
+    const client_secret = import.meta.env.VITE_REACT_APP_PASSPORT_CLIENT_SECRET
+    const grant_type = import.meta.env.VITE_REACT_APP_PASSPORT_GRANT_TYPE
+    const scope = import.meta.env.VITE_REACT_APP_PASSPORT_SCOPE
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const result = await dispatch(login({ email, password })).unwrap()
+        const result = await dispatch(login({ email, password, grant_type, client_id, client_secret, scope })).unwrap()
         if (result.token) navigate('/')
     }
 
