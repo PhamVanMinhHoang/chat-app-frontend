@@ -18,12 +18,6 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
         return <div>Đang tải danh sách cuộc trò chuyện...</div>;
     }
 
-    // Xử lý khi chọn một cuộc trò chuyện
-    const handleSelectConversation = (id: number) => {
-        dispatch(setConversationId(id))
-        if (onSelect) onSelect()  // gọi callback nếu có
-    }
-
     return (
         <div className="overflow-y-auto">
             {conversations.map(conv => {
