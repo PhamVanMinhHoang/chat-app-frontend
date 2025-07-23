@@ -23,7 +23,7 @@ interface Conversation {
     type: string;
     updated_at: string;
     users: User[];             // danh sách user trong cuộc trò chuyện
-    lastMessage: MessagePreview | null;  // tin nhắn cuối cùng (nếu có)
+    last_message: MessagePreview | null;  // tin nhắn cuối cùng (nếu có)
 }
 
 // Thunk lấy danh sách cuộc trò chuyện

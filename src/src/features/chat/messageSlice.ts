@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { getMessagesApi } from '@/features/chat/messageService';
+import { getMessagesApi, sendMessageApi } from '@/features/chat/messageService';
 
 // Định nghĩa kiểu dữ liệu cho Message
 interface Message {
@@ -46,14 +46,39 @@ export const fetchMessages = createAsyncThunk<
     }
 });
 
+// Thunk gửi tin nhắn mới
+export const sendMessage = createAsyncThunk<
+    Message,                // kiểu dữ liệu trả về (Message mới gửi)
+    { conversationId: number; content: string },  // tham số truyền vào
+    { rejectValue: string }  // kiểu lỗi
+>('messages/sendMessage', async ({ conversationId, content }, { rejectWithValue }) => {
+    try {
+        const response = await sendMessageApi(conversationId, content);
+        // API trả về { success: true, data: {...} } (tin nhắn mới)
+        return response.data  // API trả về dữ liệu Message vừa tạo
+
+    } catch (err: any) {
+        return rejectWithValue(err.response?.data?.message || err.message);
+    }
+});
+
 // Tạo slice cho tin nhắn
 const messageSlice = createSlice({
     name: 'messages',
     initialState,
     reducers: {
         setConversationId(state, action: PayloadAction<number | null>) {
-            state.conversationId = action.payload;
-            state.items = [];  // reset messages when switching conv
+            state.conversationId = action.payload
+            state.items = []  // reset danh sách tin nhắn khi chọn cuộc trò chuyện mới
+            state.error = null
+        },
+        // Reduce thêm một tin nhắn mới vào state (sử dụng cho realtime hoặc sau khi gửi tin nhắn)
+        addMessage(state, action: PayloadAction<Message>) {
+            const newMsg = action.payload
+            // Nếu tin nhăn này chưa có trong danh sách, thêm vào
+            if (!state.items.find(msg => msg.id === newMsg.id)) {
+                state.items.push(newMsg)
+            }
         }
     },
     extraReducers: (builder) => {
@@ -70,10 +95,29 @@ const messageSlice = createSlice({
             .addCase(fetchMessages.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload || 'Lỗi tải tin nhắn';
-            });
+            })
+
+            // Xử lý gửi tin nhắn
+            .addCase(sendMessage.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(sendMessage.fulfilled, (state, action) => {
+                state.loading = false;
+                // Thêm tin nhắn mới vào danh sách
+                const sentMsg = action.payload
+                // Thêm tin nhắn vừa gửi vào danh sách (nếu chưa có)
+                if (!state.items.find(msg => msg.id === sentMsg.id)) {
+                    state.items.push(sentMsg)
+                }
+            })
+            .addCase(sendMessage.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload || 'Lỗi gửi tin nhắn';
+            })
     },
 });
 
 // Export the setConversationId action for use in components
-export const { setConversationId } = messageSlice.actions;
+export const { setConversationId, addMessage } = messageSlice.actions;
 export default messageSlice.reducer;

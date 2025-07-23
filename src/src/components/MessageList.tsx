@@ -16,13 +16,13 @@ export const MessageList: React.FC = () => {
     if (error) {
         return <div className="text-red-500">Lỗi: {error}</div>;
     }
-
+    console.log('messages', messages)
     return (
         <div className="flex flex-col p-4 space-y-2 max-h-full overflow-y-auto">
             {messages.map(msg => (
                 <div key={msg.id} className="flex flex-col">
           <span className="text-sm text-gray-600">
-            <b>{msg.sender.name}:</b> {/* Tên người gửi */}
+            <b>{msg.sender.name? msg.sender.name : `User ${msg.sender.id}`}:</b> {/* Tên người gửi */}
               <span className="ml-2 text-gray-800">{msg.content}</span>  {/* Nội dung tin nhắn */}
           </span>
                     <span className="text-xs text-gray-500 self-end">
