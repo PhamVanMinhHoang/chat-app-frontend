@@ -21,7 +21,6 @@ export const login = createAsyncThunk<
 >('auth/login', async (creds, { rejectWithValue }) => {
     try {
         const res = await loginApi(creds)
-        console.log('res', res);
         return res.data
     } catch (err: any) {
         return rejectWithValue(err.response?.data?.message || err.message)

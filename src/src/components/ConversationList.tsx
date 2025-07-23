@@ -54,10 +54,12 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
                             dispatch(fetchMessages(conv.id))
                             // Tham gia vào kênh realtime của conversation hiện tại
                             if (echo) {
-                                echo.join(`conversation.${conv.id}`)
+                                console.log(`Tham gia kênh realtime cho cuộc trò chuyện ${conv.id}`)
+                                echo.private(`conversation.${conv.id}`)
                                     .listen('MessageSent', (e: any) => {
                                         // Khi nhận được sự kiện MessageSent (có tin nhắn mới)
                                         const newMessage = e.message  // backend gửi { message: {..} }
+                                        console.log(`Nhận tin nhắn mới: ${newMessage.content} từ cuộc trò chuyện ${conv.id}`)
                                         dispatch(addMessage(newMessage))
                                     })
                             }

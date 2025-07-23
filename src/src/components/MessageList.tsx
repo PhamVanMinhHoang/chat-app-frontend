@@ -16,7 +16,6 @@ export const MessageList: React.FC = () => {
     if (error) {
         return <div className="text-red-500">Lỗi: {error}</div>;
     }
-    console.log('messages', messages)
     return (
         <div className="flex flex-col p-4 space-y-2 max-h-full overflow-y-auto">
             {messages.map(msg => (

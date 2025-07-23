@@ -15,7 +15,6 @@ let echo: Echo<any> | null = null
 export const initEcho = (token: string) => {
     if (echo) return  // nếu đã khởi tạo rồi thì không làm lại
 
-    console.log('token', token)
     echo = new Echo({
         broadcaster: 'pusher',
         key: import.meta.env.VITE_PUSHER_APP_KEY,            // Pusher Key từ cấu hình backend
@@ -29,14 +28,6 @@ export const initEcho = (token: string) => {
             }
         }
     })
-
-    console.log(echo)
-    // Lấy socket_id sau khi kết nối thành công:
-    if (echo) {
-        echo.connector.pusher.connection.bind('connected', () => {
-            console.log('Socket ID:', echo!.socketId())
-        })
-    }
 
 }
 

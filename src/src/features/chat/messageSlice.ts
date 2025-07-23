@@ -53,9 +53,10 @@ export const sendMessage = createAsyncThunk<
     { rejectValue: string }  // kiểu lỗi
 >('messages/sendMessage', async ({ conversationId, content }, { rejectWithValue }) => {
     try {
+        console.log(`Gửi tin nhắn: ${content} vào cuộc trò chuyện ${conversationId}`);
         const response = await sendMessageApi(conversationId, content);
         // API trả về { success: true, data: {...} } (tin nhắn mới)
-        return response.data  // API trả về dữ liệu Message vừa tạo
+        return response.data.data  // API trả về dữ liệu Message vừa tạo
 
     } catch (err: any) {
         return rejectWithValue(err.response?.data?.message || err.message);
