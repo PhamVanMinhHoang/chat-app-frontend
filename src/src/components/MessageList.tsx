@@ -19,14 +19,14 @@ export const MessageList: React.FC = () => {
     return (
         <div className="flex flex-col p-4 space-y-2 max-h-full overflow-y-auto">
             {messages.map(msg => (
-                <div key={msg.id} className="flex flex-col">
-          <span className="text-sm text-gray-600">
-            <b>{msg.sender.name? msg.sender.name : `User ${msg.sender.id}`}:</b> {/* Tên người gửi */}
-              <span className="ml-2 text-gray-800">{msg.content}</span>  {/* Nội dung tin nhắn */}
-          </span>
+                <div key={msg.id} className="flex flex-col bg-gray-100 rounded px-3 py-2">
+                    <span className="text-sm font-semibold text-gray-800">
+                        {msg.sender.name ? msg.sender.name : `User ${msg.sender.id}`}
+                    </span>
+                    <span className="text-gray-700">{msg.content}</span>
                     <span className="text-xs text-gray-500 self-end">
-            { new Date(msg.created_at).toLocaleTimeString() }
-          </span>
+                        {new Date(msg.created_at).toLocaleTimeString()}
+                    </span>
                 </div>
             ))}
         </div>

@@ -29,7 +29,7 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
     }
 
     return (
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto divide-y">
             {conversations.map(conv => {
                 // Xác định tên hiển thị cho cuộc trò chuyện
                 let title = conv.name
@@ -41,7 +41,7 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
                 return (
                     <div
                         key={conv.id}
-                        className="p-3 cursor-pointer hover:bg-gray-100"
+                        className={`p-3 cursor-pointer hover:bg-gray-100 ${currentConvId === conv.id ? 'bg-blue-50' : ''}`}
                         onClick={() => {
                             // Nếu đang có cuộc trò chuyện khác mở, rời khỏi kênh cũ trước khi join kênh mới
                             const echo = getEcho()
@@ -75,4 +75,5 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
         </div>
     );
 }
+
 

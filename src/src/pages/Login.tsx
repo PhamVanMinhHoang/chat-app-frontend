@@ -19,7 +19,7 @@ const Login: React.FC = () => {
 
     return (
         <AuthLayout>
-            <h2 className="text-2xl mb-4">Login</h2>
+            <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input
                     type="email"
@@ -27,7 +27,7 @@ const Login: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Email"
                     required
-                    className="w-full border p-2 rounded"
+                    className="w-full border rounded px-3 py-2 focus:outline-blue-500"
                 />
                 <input
                     type="password"
@@ -35,13 +35,13 @@ const Login: React.FC = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Password"
                     required
-                    className="w-full border p-2 rounded"
+                    className="w-full border rounded px-3 py-2 focus:outline-blue-500"
                 />
                 {error && <p className="text-red-500">{error}</p>}
                 <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-blue-600 text-white p-2 rounded"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 rounded"
                 >
                     {loading ? 'Logging in...' : 'Login'}
                 </button>

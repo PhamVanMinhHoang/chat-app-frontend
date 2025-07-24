@@ -26,7 +26,7 @@ export const MessageInput: React.FC = () => {
             />
             <button
                 type="submit"
-                className="ml-2 px-4 py-2 bg-blue-500 text-white font-semibold rounded disabled:opacity-50"
+                className="ml-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded disabled:opacity-50"
                 disabled={!conversationId || text.trim() === ''}
             >
                 Gửi
