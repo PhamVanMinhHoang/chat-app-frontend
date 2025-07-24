@@ -5,7 +5,7 @@ import { MessageInput} from "@/components/MessageInput";
 
 const Home: React.FC = () => {
     return (
-        <div className="flex h-[calc(100vh-100px)] bg-white border rounded shadow">
+        <div className="flex h-[calc(100vh-100px)] bg-white border rounded shadow-lg overflow-hidden">
             {/* Danh sách cuộc trò chuyện bên trái */}
             <div className="w-1/3 border-r h-full">
                 <ConversationList />
@@ -24,3 +24,4 @@ const Home: React.FC = () => {
     )
 }
 export default Home;
+
