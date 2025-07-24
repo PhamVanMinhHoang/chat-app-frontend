@@ -8,7 +8,7 @@ interface Message {
     sender_id: number;
     content: string;
     created_at: string;
-    sender: { id: number; name: string };  // thông tin người gửi (đã load kèm)
+    sender: { id: number; name: string; avatar:string };  // thông tin người gửi (đã load kèm)
     // ... các trường khác như reactions, attachments nếu cần
 }
 

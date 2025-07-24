@@ -1,27 +1,26 @@
-// src/pages/Home.tsx
-import { ConversationList } from '@/components/ConversationList'
-import { MessageList } from '@/components/MessageList'
-import { MessageInput} from "@/components/MessageInput";
+import { ThemeSwitcher } from '@/components/ThemeSwitcher';
+import { ConversationList } from '@/components/ConversationList';
+import { MessageList } from '@/components/MessageList';
+import { MessageInput } from '@/components/MessageInput';
 
-const Home: React.FC = () => {
+export default function Home() {
     return (
-        <div className="flex h-[calc(100vh-100px)] bg-white border rounded shadow-lg overflow-hidden">
-            {/* Danh sách cuộc trò chuyện bên trái */}
-            <div className="w-1/3 border-r h-full">
+        <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+            {/* Sidebar */}
+            <aside className="w-72 border-r bg-gray-50 dark:bg-gray-900 dark:border-gray-800 flex flex-col">
+                <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
+                    <span className="text-lg font-bold">Chat App</span>
+                    <ThemeSwitcher />
+                </div>
                 <ConversationList />
-            </div>
-
-            {/* Khu vực tin nhắn bên phải */}
-            <div className="w-2/3 h-full flex flex-col">
-                {/* Phần danh sách tin nhắn chiếm toàn bộ chiều cao trừ phần input */}
-                <div className="flex-grow">
+            </aside>
+            {/* Main chat area */}
+            <main className="flex-1 flex flex-col">
+                <div className="flex-1 overflow-y-auto">
                     <MessageList />
                 </div>
-                {/* Phần ô nhập tin nhắn ở cuối */}
                 <MessageInput />
-            </div>
+            </main>
         </div>
-    )
+    );
 }
-export default Home;
-

@@ -1,37 +1,35 @@
-import { useState, FormEvent } from 'react'
-import { useAppSelector, useAppDispatch } from '@/hooks/redux'
-import { sendMessage } from '@/features/chat/messageSlice'
+import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux';
+import { sendMessage } from '@/features/chat/messageSlice';
 
-export const MessageInput: React.FC = () => {
+export const MessageInput = () => {
     const dispatch = useAppDispatch();
-    const conversationId = useAppSelector(state => state.messages.conversationId)
-    const [text, setText] = useState('');
+    const [messageText, setMessageText] = useState('');
+    const conversationId = useAppSelector(state => state.messages.conversationId);
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSend = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!conversationId || text.trim() === '') return  // Không gửi nếu chưa chọn cuộc trò chuyện hoặc nội dung rỗng
-        // Dispatch thunk gửi tin nhắn mới
-        dispatch(sendMessage({ conversationId, content: text }))
-        setText('')  // Xóa nội dung ô input sau khi gửi
-    }
+        if (!conversationId || !messageText.trim()) return;
+        dispatch(sendMessage({ conversationId, content: messageText }));
+        setMessageText('');
+    };
+
     return (
-        <form onSubmit={handleSubmit} className="p-4 border-t flex items-center">
+        <form onSubmit={handleSend} className="p-4 border-t dark:border-gray-800 flex items-center bg-white dark:bg-gray-900">
             <input
                 type="text"
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder={conversationId ? "Nhập tin nhắn..." : "Chọn một cuộc trò chuyện để nhắn"}
-                className="flex-grow border rounded px-3 py-2 focus:outline-none"
-                disabled={!conversationId}
+                className="flex-1 rounded-full px-4 py-2 border border-gray-300 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 focus:outline-none focus:ring focus:ring-blue-300"
+                placeholder="Nhập tin nhắn..."
+                value={messageText}
+                onChange={e => setMessageText(e.target.value)}
             />
             <button
                 type="submit"
-                className="ml-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded disabled:opacity-50"
-                disabled={!conversationId || text.trim() === ''}
+                className="ml-2 px-4 py-2 rounded-full bg-blue-500 text-white font-semibold shadow hover:bg-blue-600 transition"
+                disabled={!messageText.trim()}
             >
                 Gửi
             </button>
-
         </form>
-    )
-}
+    );
+};

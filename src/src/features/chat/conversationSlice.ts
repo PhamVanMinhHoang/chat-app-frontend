@@ -5,6 +5,8 @@ import { getConversationsApi } from "@/features/chat/conversationService";
 interface User {
     id: number;
     name: string;
+    avatar: string | null;  // có thể là null nếu không có avatar
+    is_current_user?: boolean;  // đánh dấu người dùng hiện tại (nếu cần)
 }
 
 // Định nghĩa kiểu dữ liệu cho MessagePreview
@@ -20,6 +22,7 @@ interface MessagePreview {
 interface Conversation {
     id: number;
     name: string | null;
+    avatar: string | null;  // có thể là null nếu không có avatar
     type: string;
     updated_at: string;
     users: User[];             // danh sách user trong cuộc trò chuyện

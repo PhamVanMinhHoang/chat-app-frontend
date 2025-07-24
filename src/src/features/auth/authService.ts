@@ -1,5 +1,12 @@
 import { client } from '@/api/client'
 
+export interface User {
+    id: number;
+    name: string;
+    email: string;
+    avatar?: string;
+}
+
 export interface Credentials {
     email: string
     password: string
@@ -13,7 +20,7 @@ export interface RegisterCredentials {
 }
 
 export const loginApi = (creds: Credentials) =>
-    client.post<{ token: string; refreshToken: string }>('/auth/login', creds)
+    client.post<{ token: string; user: User }>('/auth/login', creds)
 
 export const registerApi = (creds: RegisterCredentials) =>
-    client.post<{ token: string; refreshToken: string }>('/auth/register', creds)
+    client.post<{ token: string; user: User }>('/auth/register', creds)
