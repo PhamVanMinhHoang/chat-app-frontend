@@ -14,6 +14,7 @@ interface AuthState {
     user: User | null
     loading: boolean
     error: string | null
+    success: string | null
 }
 
 const initialState: AuthState = {
@@ -21,6 +22,7 @@ const initialState: AuthState = {
     user: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null,  // Lưu thông tin người dùng nếu có
     loading: false,
     error: null,
+    success: null,
 }
 
 export const login = createAsyncThunk<
@@ -37,7 +39,7 @@ export const login = createAsyncThunk<
 })
 
 export const register = createAsyncThunk<
-    { token: string; user: User },
+    { success: string; user: User },
     RegisterCredentials,
     { rejectValue: string }
 >('auth/register', async (creds, { rejectWithValue }) => {
@@ -75,9 +77,13 @@ const authSlice = createSlice({
                 s.error = a.payload || a.error.message!
             })
 
-            .addCase(register.pending, (s) => { s.loading = true; s.error = null })
+            .addCase(register.pending, (s) => {
+                s.loading = true;
+                s.error = null
+            })
             .addCase(register.fulfilled, (s, a) => {
                 s.loading = false
+                s.success = a.payload.success;
             })
             .addCase(register.rejected, (s, a) => {
                 s.loading = false;

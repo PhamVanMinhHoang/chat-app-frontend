@@ -1,26 +1,25 @@
-import { ThemeSwitcher } from '@/components/ThemeSwitcher';
-import { ConversationList } from '@/components/ConversationList';
+// src/pages/Home.tsx
+import { useAppSelector } from '@/hooks/redux';
 import { MessageList } from '@/components/MessageList';
 import { MessageInput } from '@/components/MessageInput';
 
 export default function Home() {
+    const conversationId = useAppSelector((state) => state.messages.conversationId);
+
+    if (!conversationId) {
+        return (
+            <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+                <p>Hãy chọn một cuộc trò chuyện để bắt đầu.</p>
+            </div>
+        );
+    }
+
     return (
-        <div className="flex h-full bg-gray-100 dark:bg-gray-900">
-            {/* Sidebar */}
-            <aside className="w-72 border-r bg-gray-50 dark:bg-gray-900 dark:border-gray-800 flex flex-col h-full">
-                <div className="flex items-center justify-between p-4 border-b dark:border-gray-800">
-                    <span className="text-lg font-bold" >Chat App</span>
-                    <ThemeSwitcher />
-                </div>
-                <ConversationList />
-            </aside>
-            {/* Main chat area */}
-            <main className="flex-1 flex flex-col h-full">
-                <div className="flex-1 overflow-y-auto">
-                    <MessageList />
-                </div>
-                <MessageInput />
-            </main>
+        <div className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto">
+                <MessageList />
+            </div>
+            <MessageInput />
         </div>
     );
 }

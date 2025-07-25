@@ -27,13 +27,13 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
     }
 
     return (
-        <div className="overflow-y-auto h-full px-2 py-2 bg-gray-50 dark:bg-gray-900 border-r dark:border-gray-800">
+        <div className="overflow-y-auto h-full px-2 py-2 bg-gray-600 dark:bg-gray-900 border-r dark:border-gray-800">
             {conversations.length === 0 && (
                 <div className="text-center py-4 text-gray-400 italic">Chưa có cuộc trò chuyện nào.</div>
             )}
             {conversations.map(conv => {
                 // Lấy avatar: nếu là nhóm thì conv.avatar, nếu chat riêng thì lấy avatar của người còn lại
-                let avatar = conv.avatar ? conv.avatar : '/default-avatar.png';
+                let avatar = conv.avatar ? conv.avatar : '';
                 let title = conv.name ? conv.name : 'Cuộc trò chuyện';
                 if ((!avatar || avatar === '') && conv.users?.length > 0) {
                     const otherUser = conv.users.find(u => !u.is_current_user);
@@ -49,10 +49,10 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
                     <div
                         key={conv.id}
                         className={`
-                            flex items-center gap-3 p-3 mb-1 cursor-pointer rounded-xl transition
+                            flex items-center gap-3 px-3 py-2 mb-1 cursor-pointer rounded-lg transition
                             ${isActive
-                            ? 'bg-blue-100 dark:bg-blue-900 font-semibold border-l-4 border-blue-500'
-                            : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+                            ? 'bg-purple-600 text-white'
+                            : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100'
                         }
                         `}
                         onClick={() => {
@@ -74,8 +74,8 @@ export const ConversationList: React.FC<{ onSelect?: () => void }> = ({ onSelect
                     >
                         <Avatar src={avatar} alt={title} size={42} />
                         <div className="min-w-0 flex-1">
-                            <div className="truncate text-base">{title}</div>
-                            <div className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                            <div className="truncate text-medium">{title}</div>
+                            <div className="truncate text-xs text-gray-500 dark:text-gray-400">
                                 {lastMsg}
                             </div>
                         </div>

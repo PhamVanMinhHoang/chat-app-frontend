@@ -23,4 +23,4 @@ export const loginApi = (creds: Credentials) =>
     client.post<{ token: string; user: User }>('/auth/login', creds)
 
 export const registerApi = (creds: RegisterCredentials) =>
-    client.post<{ token: string; user: User }>('/auth/register', creds)
+    client.post<{ success: string; user: User }>('/auth/register', creds)
